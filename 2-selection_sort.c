@@ -1,7 +1,10 @@
 #include "sort.h"
 
 /**
- * */
+ * selection_sort - sort an array using selection sort
+ * @array: array to sort
+ * @size: size of the array
+ */
 
 void selection_sort(int *array, size_t size)
 {
