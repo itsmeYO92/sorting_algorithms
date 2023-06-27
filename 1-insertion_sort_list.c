@@ -7,37 +7,45 @@
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *back;
+	listint_t *current, *back, *tmp;
 
 	if (!list || !(*list))
 		return;
-	if (!(*list)->next)
+	if ((*list)->next == NULL)
 		return;
 
 	current  = (*list)->next;
 	while (current)
 	{
 		back = current->prev;
+		tmp = current->next;
 
-		if (back)
+		while (back && current->n < back->n)
 		{
-			while (current->n < back->n)
-			{
-				back->next = current->next;
-				if (current->next)
-					current->next->prev = back;
-				back->prev = current->prev;
-				back->next = current;
-				if (back->prev)
-					back->prev->next = current;
-				else
-					*list = current;
-				back->prev = current;
-				back = current->prev;
-				print_list(*list);
-				break;
-			}
+			swap_nodes(list, &back, current);
+			print_list(*list);
 		}
-		current = current->next;
+		current = tmp;
 	}
+}
+
+/**
+* swap_nodes - Swap two adjusent nodes in list
+* @head:    A pointer to the head of the double-linked list
+* @nodeP1:  A pointer to the first node to swap
+* @nodeP2:  A pointer to the second node to swap
+*/
+void swap_nodes(listint_t **head, listint_t **nodeP1, listint_t *nodeP2)
+{
+	(*nodeP1)->next = nodeP2->next;
+	if (nodeP2->next != NULL)
+		nodeP2->next->prev = *nodeP1;
+	nodeP2->prev = (*nodeP1)->prev;
+	nodeP2->next = *nodeP1;
+	if ((*nodeP1)->prev != NULL)
+		(*nodeP1)->prev->next = nodeP2;
+	else
+		*head = nodeP2;
+	(*nodeP1)->prev = nodeP2;
+	*nodeP1 = nodeP2->prev;
 }
